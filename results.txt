@@ -1,0 +1,78 @@
+used about 150000 reviews of cred app
+app id :com.dreamplug.androidapp
+used google_play_scraper
+put the results into a pandas df
+df contains all 150000 reviers
+df['at']=review given date
+    review id:uniquer id of each review
+    username:username of the review giver
+    content:actual review
+    score:rating 1-5
+    tumbsup count:count of how many people thought it helpful;
+    review created version:version on which the review is written
+    app version:app version on which the review is written
+user various themes:rewards_devaluation,app_perfoamance,customer_support,
+    payment_issues,ui_ux,loan_issues,trust_privacy,feature_request
+the themes is a dict where eacxh theme has appripriate keywords
+these keywords are then used to search the df[content]
+and tag them in the first category they appear in first
+i also tried using keywords just to search for them in content and filtert he reviews that way
+using the keywords and df[score]<3 and  review_count>100 i am able to identify that the 
+    some version's are more prone to negative review's which match to:
+    keywords = [
+    'reward', 'rewards', 'coin', 'coins', 'cashback', 'cash back',
+    'redeem', 'redemption', 'points', 'gems', 'store', 'cred store',
+    'search', 'discover', 'browse', 'find', 'explore'
+    ]
+of these we can see that 3.2.3.18 is the most neagtively reviewed version and followed by
+    4.0.1.6,3.1.5.7,3.2.0.11 etc
+apart from this
+the total reviews is 150000
+date range in which reviews are considered are from oct 2022 to feb 2026
+and total of 233 app versions are spanned in this 150000 reviews
+and top 15 app versions with most reviews are identified 
+these top 15 have +ve reviews and -ve reviews
+we can conclude these are most revied versions +ve wise and -ve wise
+for out analysis in the df_valid i kept only versions of apps with 100+ reviews
+df_valid has 110 versions 
+df_valid has 134552 reviews
+as we already have themes for the issues we use pain_points df
+to have score<3 and get review_count and avg_rating,total-thumbs_up,avg_thumbs_up
+so we identify that 
+    rewards_devaluation has 5715 revies in it which are -ve and 1.13 avg rating
+    folowed by customer-support with 3929 reviews which are -ve
+and then i  theme_spread we use the themes and app version count to see where the -ve reviews 
+    concentrated
+    here we see if the top 2 version s have >60% of neg reviews then version bug
+    else its a single version bug 
+    here we can see that what the top 2 version's account in total -ve reviews
+
+so we have identifies the rewards_devaluation as the pain point to concentrate
+    from the df_valid we get score<3 and themes =rewards_devaluation
+    and get the top 10 revies whithe maximum thumbsupcount
+
+so we dientifty that cred as awhole has 4.20 ratring across all category
+    but when we only considert he rewards_devaluation category then it is 2.48
+    that accounts like 59% reviews including rewards are negative 
+    which further boosts that rewards is where cred needs to imoprove services
+
+by normalizing the pain points review and thumbsuop count b/n 0 and 1
+    we can see that only 23224 reviews are considered same as pain_points
+    in pain_points df we get values which range from 5715 to 296 so
+    we normalize it by value-min/max-min which gives each normalized in 0-1 range
+    then we are assigning a weight of 0.4 to review count and 0.6 to thumbsupcount
+        bcoz if number of thumbsupcount is higher then more people are facing the smae issues
+        so we give it 60% weightaige and 40 to reviewcount
+
+
+also we visualize the reviews count -ve only by year and month in a visual
+    we find that some months have very high -ve rview count 
+    this needs to be analyzed with the keywords df to fidn whioch version the customer is most dissatified with
+
+
+valso we find that over all -ve and +ve combined that rewards_devaluation reviews are 
+    only 9559 of which 5715 are -ve this is highest of all
+
+other category (users who don't mention any specific problem) averages 4.68 stars across 101,840 reviews. 
+That's the silent happy majority. The dissatisfaction is entirely concentrated in users who engage with specific features 
+— especially rewards.
